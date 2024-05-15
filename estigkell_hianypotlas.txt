@@ -1,0 +1,6 @@
+1 input mező nem maradhat üresen
+2 szám mező csak számot fogad el
+3 modosítás kidolgozása
+4 felugró config ablak törlés
+5 address helyett location js-ben
+6 design

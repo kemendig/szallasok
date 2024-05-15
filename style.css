@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 
+/* CSS */
 html {
   height:100%;
   background-image: linear-gradient(to right top, #8e44ad 0%, #3498db 100%);
@@ -43,23 +44,27 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background: linear-gradient(to right top, #8e44ad 0%, #3498db 100%); /* Korábban megadott háttérszín */
 }
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
+
 nav {
   background-color: #333;
   color: #fff;
   padding: 10px;
 }
+
 nav a {
   color: #fff;
   text-decoration: none;
   margin-right: 20px;
 }
+
 .btn {
   background-color: #007bff;
   color: #fff;
@@ -68,6 +73,71 @@ nav a {
   cursor: pointer;
   border-radius: 5px;
 }
+
 .btn:hover {
   background-color: #0056b3;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* A kártyák egyenlő távolságban vannak az oldal szélétől */
+}
+
+.card {
+  width: calc(33.33% - 20px); /* Három kártya egy sorban */
+  margin: 20px; /* Távolság az alsó margóhoz */
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Ha a kártyák mérete vagy elrendezése kisebb képernyőkön változik */
+@media (max-width: 768px) {
+  .card {
+      width: calc(50% - 20px); /* Két kártya egy sorban kisebb képernyőn */
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+      width: 100%; /* Egy kártya egy sorban */
+  }
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.card h3 {
+  margin-top: 0;
+}
+
+.card p {
+  margin-bottom: 8px;
+}
+
+.card button {
+  margin-top: 8px;
 }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Szállások Admin</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="#" id="szallasokBtn">Szállások</a>
+        <a href="#" id="ujSzallasBtn">Új szállás felvitele</a>
+    </nav>
+
+    <!-- Tartalom -->
+    <div class="container" id="content">
+        <!-- Üdvözlő kezdőképernyő -->
+        <h2>Üdvözlünk az admin felületen!</h2>
+        <p>Válassz a fenti menüpontok közül a navigációhoz.</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Szállások gomb eseménykezelő
+        document.getElementById('szallasokBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            fetchAndDisplaySzállások();
+        });
+
+        // Új szállás gomb eseménykezelő
+        document.getElementById('ujSzallasBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            displayNewSzállásForm();
+        });
+
+        // Szállások lekérése és kilistázása
+        function fetchAndDisplaySzállások() {
+            fetch('https://nodejs.sulla.hu/data')
+            .then(response => response.json())
+            .then(data => {
+                let szállásokHTML = '<h2>Szállások</h2>';
+                data.forEach(szállás => {
+                    szállásokHTML += `
+                        <div>
+                            <h3>${szállás.name}</h3>
+                            <p>${szállás.address}</p>
+                            <button class="btn" onclick="deleteSzállás(${szállás.id})">Törlés</button>
+                            <button class="btn" onclick="showDetails(${szállás.id})">Részletek</button>
+                            <button class="btn" onclick="editSzállás(${szállás.id})">Módosítás</button>
+                        </div>
+                    `;
+                });
+                document.getElementById('content').innerHTML = szállásokHTML;
+            })
+            .catch(error => console.error('Hiba történt:', error));
+        }
+
+        // Új szállás felvételi űrlap megjelenítése
+        function displayNewSzállásForm() {
+            let formHTML = `
+                <h2>Új szállás felvitele</h2>
+                <form id="newSzállásForm">
+                    <label for="name">Név:</label><br>
+                    <input type="text" id="name" name="name"><br>
+                    <label for="address">Cím:</label><br>
+                    <input type="text" id="address" name="address"><br><br>
+                    <button type="submit" class="btn">Mentés</button>
+                </form>
+            `;
+            document.getElementById('content').innerHTML = formHTML;
+
+            document.getElementById('newSzállásForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const szállásData = {};
+                formData.forEach((value, key) => {
+                    szállásData[key] = value;
+                });
+                saveNewSzállás(szállásData);
+            });
+        }
+
+        // Új szállás mentése
+        function saveNewSzállás(szállásData) {
+            fetch('https://nodejs.sulla.hu/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(szállásData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Szállás sikeresen hozzáadva!');
+                fetchAndDisplaySzállások();
+            })
+            .catch(error => console.error('Hiba történt:', error));
+        }
+
+        // Szállás törlése
+        function deleteSzállás(id) {
+            fetch(`https://nodejs.sulla.hu/data/${id}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Szállás sikeresen törölve!');
+                fetchAndDisplaySzállások();
+            })
+            .catch(error => console.error('Hiba történt:', error));
+        }
+
+        // Szállás részleteinek megjelenítése
+        function showDetails(id) {
+            fetch(`https://nodejs.sulla.hu/data/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                alert(`Név: ${data.name}\nCím: ${data.address}`);
+            })
+            .catch(error => console.error('Hiba történt:', error));
+        }
+
+        // Szállás szerkesztése
+        function editSzállás(id) {
+            // TODO: Implement edit functionality
+            alert('A szerkesztés funkció jelenleg még nem elérhető.');
+        }
+    </script>
+</body>
+</html>

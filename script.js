@@ -215,13 +215,13 @@ function displayEditForm(szállásData) {
     document.getElementById('editForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const formData = new FormData(event.target);
-        const szállásData = {};
+        const updatedData = {};
         formData.forEach((value, key) => {
-            szállásData[key] = value;
+            updatedData[key] = value;
         });
 
         // Szállás frissítése
-        updateSzállás(szállásData);
+        updateSzállás(updatedData);
     });
 }
 
@@ -237,10 +237,11 @@ function updateSzállás(szállásData) {
     .then(response => response.json())
     .then(data => {
         alert('Szállás sikeresen frissítve!');
-        fetchAndDisplaySzállások();
+        fetchAndDisplaySzállások(); // Adatok frissítése a módosítás után
     })
     .catch(error => console.error('Hiba történt:', error));
 }
+
 
 // Szerkesztés megszakítása (Visszatérés az eredeti nézethez)
 function cancelEdit() {
